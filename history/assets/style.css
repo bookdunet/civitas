@@ -1,0 +1,7 @@
+
+body { font-family: 'Noto Sans KR', sans-serif; background:#f9fafb; color:#222; line-height:1.6; margin:0; padding:0; }
+header { background:#334155; color:white; text-align:center; padding:20px 0; }
+main { max-width:720px; margin:30px auto; background:white; padding:30px; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.05); }
+footer { text-align:center; font-size:14px; color:#777; padding:20px 0; }
+a { color:#0284c7; text-decoration:none; }
+a:hover { text-decoration:underline; }
