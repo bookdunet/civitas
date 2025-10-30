@@ -3,30 +3,31 @@ name: Civitas Life Auto Deploy
 on:
   push:
     branches:
-      - main   # 또는 master 브랜치 사용 시 'master'로 변경
-  workflow_dispatch:
+      - main
+    paths:
+      - "public/**"
+      - ".github/workflows/deploy.yml"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: 📦 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🌐 Setup Pages
+      - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: 🚀 Upload static site
+      - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public  # Civitas Life 사이트의 정적 파일 경로
+          path: ./public  # Civitas Life 사이트 HTML 위치
 
-      - name: 🌍 Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-
