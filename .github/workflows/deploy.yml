@@ -14,7 +14,7 @@ permissions:
   id-token: write
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -26,7 +26,7 @@ jobs:
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public  # Civitas Life 사이트 HTML 위치
+          path: public   # ✅ 폴더명만 지정 (./ 빼기)
 
       - name: Deploy to GitHub Pages
         id: deployment
