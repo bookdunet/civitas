@@ -83,7 +83,7 @@
 
     <footer>© 2025 Civitas Lab Auto Generator</footer>
 
-   <script>
+<script>
   // URL의 ?exp= 파라미터 읽기
   const params = new URLSearchParams(window.location.search);
   const exp = params.get("exp") || "trust";
@@ -107,76 +107,100 @@
       // 차트 생성
       const ctx = document.getElementById("chart").getContext("2d");
 
-      // values2가 있으면 → Dual-axis chart, 없으면 → Single line chart
+      // ───────────────────────────────────────────────
+      // 🔧 자동 인식 Dual/Single Chart 생성 블록 시작
+      // ───────────────────────────────────────────────
+      if (data.dataset.values2) {
+        // 기본 설정
+        let y1Label = "Y1 값";
+        let y2Label = "Y2 값";
+        let color1 = "#2563eb"; // 기본 파랑
+        let color2 = "#10b981"; // 기본 초록
+        let fill1 = true;
+        let fill2 = false;
 
-      
-     if (data.dataset.values2) {
-  new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: data.dataset.labels,
-      datasets: [
-        {
-          label: "야간조도 (lux)",
-          data: data.dataset.values,
-          borderColor: "#f59e0b",
-          backgroundColor: "rgba(245,158,11,0.2)",
-          yAxisID: "y1",
-          tension: 0.3,
-          fill: true,
-          pointRadius: 5,
-          pointHoverRadius: 7
-        },
-        {
-          label: "평균 수면시간 (h)",
-          data: data.dataset.values2,
-          borderColor: "#2563eb",
-          backgroundColor: "rgba(37,99,235,0.2)",
-          yAxisID: "y2",
-          tension: 0.3,
-          fill: false,
-          pointRadius: 5,
-          pointHoverRadius: 7
+        // 제목 기반 조건 분기
+        if (data.title.includes("Light")) {
+          y1Label = "야간조도 (lux)";
+          y2Label = "평균 수면시간 (h)";
+          color1 = "#f59e0b"; // 주황
+          color2 = "#2563eb"; // 파랑
+        } else if (data.title.includes("Anxiety")) {
+          y1Label = "불안 단어 빈도 (per 1k words)";
+          y2Label = "신뢰 단어 빈도 (per 1k words)";
+          color1 = "#dc2626"; // 붉은색
+          color2 = "#2563eb"; // 파랑
+        } else if (data.title.includes("Trust")) {
+          y1Label = "기술적 신뢰 지수 (‰)";
+          y2Label = "사회적 신뢰도 (%)";
+          color1 = "#2563eb"; // 파랑
+          color2 = "#10b981"; // 초록
         }
-      ]
-    },
-    options: {
-      parsing: true,   // ✅ 핵심: 두 축을 독립적으로 처리
-      scales: {
-        y1: {
-          type: "linear",
-          position: "left",
-          title: { text: "조도 (lux)", display: true },
-          beginAtZero: true,
-          grid: { drawOnChartArea: true }
-        },
-        y2: {
-          type: "linear",
-          position: "right",
-          title: { text: "수면시간 (h)", display: true },
-          min: 5.5,
-          max: 8,
-          grid: { drawOnChartArea: false }  // ✅ 겹침 방지
-        }
-      },
-      plugins: {
-        legend: { position: "top" },
-        tooltip: {
-          callbacks: {
-            label: function (context) {
-              return context.dataset.label + ": " + context.formattedValue;
+
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: data.dataset.labels,
+            datasets: [
+              {
+                label: y1Label,
+                data: data.dataset.values,
+                borderColor: color1,
+                backgroundColor: `${color1}33`, // 투명도 0.2
+                yAxisID: "y1",
+                tension: 0.35,
+                fill: fill1,
+                pointRadius: 4,
+                pointHoverRadius: 6
+              },
+              {
+                label: y2Label,
+                data: data.dataset.values2,
+                borderColor: color2,
+                backgroundColor: `${color2}22`,
+                yAxisID: "y2",
+                tension: 0.35,
+                fill: fill2,
+                pointRadius: 4,
+                pointHoverRadius: 6
+              }
+            ]
+          },
+          options: {
+            parsing: true,
+            scales: {
+              y1: {
+                type: "linear",
+                position: "left",
+                title: { text: y1Label, display: true },
+                beginAtZero: false,
+                grid: { drawOnChartArea: true }
+              },
+              y2: {
+                type: "linear",
+                position: "right",
+                title: { text: y2Label, display: true },
+                beginAtZero: false,
+                grid: { drawOnChartArea: false }
+              }
+            },
+            plugins: {
+              legend: { position: "top" },
+              tooltip: {
+                callbacks: {
+                  label: (ctx) => `${ctx.dataset.label}: ${ctx.formattedValue}`
+                }
+              }
             }
           }
-        }
+        });
       }
-    }
-  });
-}
+      // ───────────────────────────────────────────────
+      // 🔧 자동 인식 Dual/Single Chart 생성 블록 끝
+      // ───────────────────────────────────────────────
 
-      
-      
       else {
-        // 일반 단일축 그래프 (기존 trust.json 등)
+        // 일반 단일축 그래프 (trust.json 등)
         new Chart(ctx, {
           type: "line",
           data: {
