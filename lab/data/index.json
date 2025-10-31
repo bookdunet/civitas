@@ -5,12 +5,12 @@
   "summary": "AI와 기술 시스템이 사회적 신뢰를 대체하는 과정을 OECD와 Google Trends 데이터를 통해 추적합니다.",
   "date": "2025-11-01"
 },
-  {
-    "id": "light",
-    "title": "자연광과 수면의 리듬",
-    "summary": "AI가 제시하는 ‘조명-리듬-심리 안정’의 과학적 관계",
-    "date": "2025-11-03"
-  },
+{
+  "id": "light",
+  "title": "Urban Light & Sleep Correlation — 도시의 빛과 꿈의 길이",
+  "summary": "NASA 위성조명 데이터와 OECD 수면 통계를 결합해 도시의 야간 조도와 인간 수면 리듬의 상관관계를 탐구합니다.",
+  "date": "2025-11-01"
+},
   {
     "id": "microbiome",
     "title": "장내 미생물과 인지 패턴",
