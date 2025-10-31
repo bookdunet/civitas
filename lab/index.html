@@ -19,35 +19,63 @@
         --radius: 14px;
         --shadow: 0 6px 14px rgba(15, 23, 42, 0.06);
       }
+
       body {
         font-family: "Noto Sans KR", sans-serif;
         margin: 0;
         background: var(--bg);
         color: var(--ink);
       }
+
       header {
+        position: relative;
         background: white;
         box-shadow: var(--shadow);
-        padding: 60px 20px;
+        padding: 60px 20px 50px;
         text-align: center;
       }
+
       header h1 {
         font-size: 36px;
         margin-bottom: 10px;
       }
+
       header p {
         color: var(--muted);
+        margin-top: 0;
       }
+
+      /* ✅ 뒤로가기 버튼을 header 내부 왼쪽 상단에 배치 */
+      .back-btn {
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        background: var(--brand);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-size: 13px;
+        cursor: pointer;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        transition: background 0.2s ease;
+      }
+      .back-btn:hover {
+        background: #1d4ed8;
+      }
+
       main {
         max-width: 1000px;
         margin: 40px auto;
         padding: 0 20px;
       }
+
       .grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 20px;
       }
+
       .card {
         background: #fff;
         border-radius: var(--radius);
@@ -56,48 +84,35 @@
         transition: transform 0.25s;
         border: 1px solid var(--line);
       }
+
       .card:hover {
         transform: translateY(-5px);
       }
+
       .card h3 {
         font-size: 20px;
         margin: 0 0 8px;
         color: var(--brand);
       }
+
       .card p {
         color: var(--muted);
         font-size: 14px;
         line-height: 1.6;
       }
+
       .card time {
         display: block;
         margin-top: 10px;
         color: #94a3b8;
         font-size: 12px;
       }
+
       .card a {
         text-decoration: none;
         color: inherit;
       }
 
-       /* 뒤로가기 버튼 */
-      .back-btn {
-        display: inline-block;
-        background: #2563eb;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        padding: 8px 14px;
-        font-size: 14px;
-        cursor: pointer;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-        margin-bottom: 24px;
-        transition: background 0.2s ease;
-      }
-      .back-btn:hover {
-        background: #1d4ed8;
-      }
-      
       footer {
         text-align: center;
         color: #64748b;
@@ -106,12 +121,12 @@
       }
     </style>
   </head>
+
   <body>
-       <!-- 🔙 뒤로가기 버튼 -->
-    <button class="back-btn" onclick="window.location.href='../index.html'">
-      ← 뒤로가기
-    </button>
     <header>
+      <button class="back-btn" onclick="window.location.href='../index.html'">
+        ← Civitas Life로 돌아가기
+      </button>
       <h1>Civitas Lab</h1>
       <p>AI 실험 아카이브 — 데이터와 철학의 만남</p>
     </header>
