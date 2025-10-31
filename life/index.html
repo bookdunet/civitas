@@ -1,25 +1,520 @@
-
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Civitas Life | 건강과 일상</title>
-<link rel="stylesheet" href="assets/style.css">
-</head>
-<body>
-<header>
-  <h1>CIVITAS LIFE</h1>
-  <p>건강 · 음식 · 일상</p>
-</header>
-<main>
-  <h2>섹션 안내</h2>
-  <p>이곳은 생활과 건강, 음식 문화를 다루는 Civitas Life 섹션입니다.</p>
-  <ul>
-    <li><a href="article-food.html">푸드: 지방이 적은 식사 구조</a></li>
-    <li><a href="article-health.html">헬스: 장내 환경과 면역력</a></li>
-  </ul>
-</main>
-<footer>© 2025 Civitas Journal</footer>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Civitas Life — 역발상 라이프 매거진</title>
+    <meta
+      name="description"
+      content="ChatGPT 트렌드 레이더로 고른 역발상 건강·미용·생활 팁을 실험하고 기록하는 주간 온라인 매거진"
+    />
+    <meta name="theme-color" content="#f6f7f8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="/favicon.ico" />
+
+    <style>
+      :root {
+        --bg: #f6f7f8;
+        --paper: #ffffff;
+        --ink: #0f172a;
+        --muted: #475569;
+        --line: #e2e8f0;
+        --brand: #0ea5e9;
+        --brand-2: #10b981;
+        --radius: 18px;
+        --shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Noto Sans KR", sans-serif;
+        scroll-behavior: smooth;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+      .container {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* ───────── 헤더 ───────── */
+      header.mast {
+        background: rgba(255, 255, 255, 0.95);
+        border-bottom: 1px solid var(--line);
+      }
+      .mast-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 20px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .logo {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        box-shadow: var(--shadow);
+      }
+      .brand h1 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 700;
+      }
+      .brand p {
+        margin: 0;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      nav.primary {
+        display: flex;
+        gap: 14px;
+      }
+      nav.primary a {
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      nav.primary a:hover {
+        background: var(--paper);
+        box-shadow: var(--shadow);
+        color: var(--ink);
+      }
+      .hamburger {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+      @media (max-width: 960px) {
+        nav.primary {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 60px;
+          left: 0;
+          width: 100%;
+          background: var(--paper);
+          border-top: 1px solid var(--line);
+          box-shadow: var(--shadow);
+          z-index: 999;
+        }
+        nav.primary.show {
+          display: flex;
+        }
+        nav.primary a {
+          padding: 14px 20px;
+          border-bottom: 1px solid var(--line);
+        }
+        .hamburger {
+          display: block;
+        }
+      }
+
+      /* ───────── Hero ───────── */
+      .hero {
+        padding: 32px 0;
+      }
+      .hero-card {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 24px;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .hero-visual {
+        aspect-ratio: 16/10;
+        background: linear-gradient(135deg, #cffafe, #dcfce7);
+      }
+      .hero-body {
+        padding: 22px;
+        display: grid;
+        align-content: center;
+        gap: 16px;
+      }
+      .eyebrow {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .hero h2 {
+        margin: 0;
+        font-size: 28px;
+      }
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      /* ───────── 광고 섹션 ───────── */
+      .ad-section {
+        margin: 30px 0;
+      }
+      .ad-slider {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 33%;
+        overflow: hidden;
+        gap: 16px;
+        scroll-behavior: smooth;
+      }
+      .ad-card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        position: relative;
+      }
+      .ad-card img {
+        width: 100%;
+        aspect-ratio: 4/3;
+        object-fit: cover;
+      }
+      .ad-info {
+        padding: 12px;
+      }
+      .ad-info h4 {
+        margin: 0;
+        font-size: 16px;
+      }
+      .ad-info p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .ad-tag {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background: rgba(255, 255, 255, 0.85);
+        color: #475569;
+        font-size: 11px;
+        padding: 2px 6px;
+        border-radius: 6px;
+      }
+
+      @media (max-width: 768px) {
+        .ad-slider {
+          grid-auto-columns: 90%;
+        }
+      }
+
+      /* ───────── 카드/섹션 ───────── */
+      .section {
+        margin: 40px 0;
+      }
+      .section h3 {
+        font-size: 20px;
+        margin-bottom: 16px;
+      }
+      .grid {
+        display: grid;
+        gap: 16px;
+      }
+      .grid.cols-3 {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+      .card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .card .thumb {
+        aspect-ratio: 16/9;
+        background: linear-gradient(135deg, #fee2e2, #fef9c3);
+      }
+      .card .body {
+        padding: 14px;
+      }
+      .card .title {
+        font-weight: 700;
+        font-size: 16px;
+        margin: 6px 0;
+      }
+      .meta {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      /* 빈 광고칸 */
+      .ad-placeholder {
+        margin: 40px auto;
+        padding: 50px 20px;
+        max-width: 760px;
+        background: linear-gradient(180deg, #f8fafc, #f1f5f9);
+        border: 1px dashed #cbd5e1;
+        border-radius: 14px;
+        text-align: center;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      }
+      .ad-label {
+        font-size: 12px;
+        color: #94a3b8;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+      }
+      .ad-message {
+        font-size: 17px;
+        font-weight: 500;
+        color: #475569;
+        line-height: 1.6;
+      }
+      .ad-message span {
+        font-size: 13px;
+        color: #94a3af;
+      }
+
+      /* ───────── Top 버튼 ───────── */
+      #toTop {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: var(--brand);
+        color: #fff;
+        border: none;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        box-shadow: var(--shadow);
+        cursor: pointer;
+        transition: opacity 0.3s ease;
+      }
+
+      /* ───────── 푸터 ───────── */
+      footer {
+        margin-top: 50px;
+        padding: 24px 20px 40px;
+        background: #fafafa;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.7;
+      }
+      .legal {
+        margin-top: 12px;
+        font-size: 12px;
+        color: #64748b;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- 헤더 -->
+    <header class="mast">
+      <div class="mast-inner">
+        <div class="brand">
+          <div class="logo">CL</div>
+          <div>
+            <h1>Civitas Life</h1>
+            <p>역발상 라이프 매거진</p>
+          </div>
+        </div>
+        <button class="hamburger" id="menuBtn" aria-label="메뉴 열기">☰</button>
+        <nav class="primary" id="mainNav">
+          <a href="#beauty">뷰티 리버설</a>
+          <a href="#health">건강 습관</a>
+          <a href="#food">음식·차</a>
+          <a href="#season">계절 케어</a>
+          <a href="#lab">실험실</a>
+          <a href="#radar">트렌드 레이더</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container">
+          <article class="hero-card">
+            <div class="hero-visual"></div>
+            <div class="hero-body">
+              <div class="eyebrow">이번 주의 역발상 · 2025.10.30</div>
+              <h2>곤약: 다이어트가 아니라 장 건강부터 바꾼다</h2>
+              <p>
+                수용성 식이섬유 글루코만난은 포만감 유도뿐 아니라 장내 미생물
+                조성을 바꾸어 식후 혈당과 염증 지표에 긍정적 영향을 줄 수
+                있습니다.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 광고 섹션 -->
+      <section class="ad-section">
+        <div class="container">
+          <div id="adSlider" class="ad-slider"></div>
+        </div>
+      </section>
+
+      <!-- 예시 콘텐츠 -->
+      <section id="beauty" class="section">
+        <div class="container">
+          <h3>Beauty Reversal · 피부/헤어</h3>
+          <div class="grid cols-3">
+            <article class="card">
+              <div class="thumb"></div>
+              <div class="body">
+                <div class="meta">2025.10.28</div>
+                <div class="title">국화 세안 7일 실험 기록</div>
+              </div>
+            </article>
+            <article class="card">
+              <div class="thumb"></div>
+              <div class="body">
+                <div class="meta">2025.10.26</div>
+                <div class="title">녹차 티팩 스팀팩: 주의점 3가지</div>
+              </div>
+            </article>
+            <article class="card">
+              <div class="thumb"></div>
+              <div class="body">
+                <div class="meta">2025.10.24</div>
+                <div class="title">식초 린스로 두피 유분 밸런싱</div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 광고 자리 없음: Placeholder A -->
+      <section class="ad-placeholder">
+        <div class="ad-inner">
+          <p class="ad-label">ADVERTISEMENT</p>
+          <p class="ad-message">
+            Your brand could be here.<br /><span
+              >광고 제휴 문의 · editor@bookdu.net</span
+            >
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- 푸터 -->
+    <footer>
+      <div class="container">
+        <p>
+          <strong>의학·건강 안내:</strong> 본 사이트의 정보는 일반 정보 제공
+          목적이며, 질병의 진단/치료/예방을 위한 의학적 조언이 아닙니다.
+        </p>
+        <p>
+          © <span id="year"></span> Bookdu Media · Civitas Life — 트렌드 기반
+          역발상 라이프 매거진
+        </p>
+        <p style="font-size: 12px; color: #94a3af">
+          사이트의 구조·디자인 및 코드를 통째로 복제하거나 미러링하는 행위는
+          금지됩니다.<br />
+          콘텐츠 일부 인용은 출처 명시 시 허용됩니다.
+        </p>
+        <div class="legal">
+          <strong>정기간행물 등록정보</strong><br />
+          등록번호: 서울 아12345 ｜ 발행인: 이준엽 ｜ 편집인: 이준엽<br />
+          주소: 서울시 북두로 11 ｜ 이메일: editor@bookdu.net ｜ 대표전화:
+          02-0000-0000
+        </div>
+      </div>
+    </footer>
+
+    <button id="toTop" aria-label="맨 위로">↑</button>
+
+    <script>
+      // 햄버거 메뉴
+      document
+        .getElementById("menuBtn")
+        .addEventListener("click", () =>
+          document.getElementById("mainNav").classList.toggle("show")
+        );
+      // Top 버튼
+      const toTop = document.getElementById("toTop");
+      window.addEventListener("scroll", () => {
+        toTop.style.display = window.scrollY > 200 ? "flex" : "none";
+      });
+      toTop.addEventListener("click", () =>
+        window.scrollTo({ top: 0, behavior: "smooth" })
+      );
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // 광고 로테이터
+      const ads = [
+        {
+          img: "ads/a1.jpg",
+          title: "PURE SKIN TONER",
+          desc: "식물성 추출물로 피부 진정. 민감성 테스트 완료.",
+          link: "#",
+        },
+        {
+          img: "ads/a2.jpg",
+          title: "HERB TEA SET",
+          desc: "카모마일, 루이보스, 라벤더의 조합 — 수면을 돕는 티타임.",
+          link: "#",
+        },
+        {
+          img: "ads/a3.jpg",
+          title: "DIET KONJAC BAR",
+          desc: "곤약과 단백질의 완벽한 조화. 1개 80kcal.",
+          link: "#",
+        },
+      ];
+      const slider = document.getElementById("adSlider");
+      function renderAds() {
+        slider.innerHTML = "";
+        ads.forEach((ad) => {
+          const card = document.createElement("article");
+          card.className = "ad-card";
+          card.innerHTML = `<a href=\"${ad.link}\"><div class=\"ad-tag\">AD</div><img src=\"${ad.img}\" alt=\"${ad.title}\"><div class=\"ad-info\"><h4>${ad.title}</h4><p>${ad.desc}</p></div></a>`;
+          slider.appendChild(card);
+        });
+      }
+      renderAds();
+      let offset = 0;
+      setInterval(() => {
+        offset = (offset + 1) % ads.length;
+        slider.scrollTo({
+          left: slider.clientWidth * offset,
+          behavior: "smooth",
+        });
+      }, 6000);
+    </script>
+    <!--
+   <script src="assets/security/integrity.js" defer></script>
+  --></body>
 </html>
