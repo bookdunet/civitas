@@ -3,112 +3,125 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Civitas Lab Experiments</title>
+    <title>Civitas Lab · AI 실험 목록</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap"
       rel="stylesheet"
     />
     <style>
+      :root {
+        --bg: #f9fafb;
+        --ink: #0f172a;
+        --muted: #475569;
+        --brand: #2563eb;
+        --accent: #10b981;
+        --line: #e2e8f0;
+        --radius: 14px;
+        --shadow: 0 6px 14px rgba(15, 23, 42, 0.06);
+      }
       body {
         font-family: "Noto Sans KR", sans-serif;
-        background: #f9fafb;
-        color: #0f172a;
-        padding: 40px;
-        max-width: 900px;
-        margin: auto;
-        line-height: 1.7;
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
       }
-      h1 {
-        font-size: 28px;
-        margin-bottom: 20px;
+      header {
+        background: white;
+        box-shadow: var(--shadow);
+        padding: 60px 20px;
+        text-align: center;
       }
-      .experiment-list {
+      header h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+      }
+      header p {
+        color: var(--muted);
+      }
+      main {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      .grid {
         display: grid;
-        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
       }
-      .experiment-card {
+      .card {
         background: #fff;
-        border-radius: 10px;
-        border: 1px solid #e2e8f0;
-        padding: 20px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 24px 22px;
+        transition: transform 0.25s;
+        border: 1px solid var(--line);
       }
-      .experiment-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+      .card:hover {
+        transform: translateY(-5px);
       }
-      a {
-        text-decoration: none;
-        color: #2563eb;
-        font-weight: 600;
+      .card h3 {
+        font-size: 20px;
+        margin: 0 0 8px;
+        color: var(--brand);
       }
-      p {
-        color: #475569;
-        margin: 6px 0 0;
-      }
-
-      /* 뒤로가기 버튼 */
-      .back-btn {
-        display: inline-block;
-        background: #2563eb;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        padding: 8px 14px;
+      .card p {
+        color: var(--muted);
         font-size: 14px;
-        cursor: pointer;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-        margin-bottom: 24px;
-        transition: background 0.2s ease;
+        line-height: 1.6;
       }
-      .back-btn:hover {
-        background: #1d4ed8;
+      .card time {
+        display: block;
+        margin-top: 10px;
+        color: #94a3b8;
+        font-size: 12px;
       }
-
+      .card a {
+        text-decoration: none;
+        color: inherit;
+      }
       footer {
         text-align: center;
         color: #64748b;
-        margin-top: 50px;
         font-size: 13px;
+        padding: 40px 20px 60px;
       }
     </style>
   </head>
-
   <body>
-    <!-- 🔙 뒤로가기 버튼 -->
-    <button class="back-btn" onclick="window.location.href='../index.html'">
-      ← Civitas Life로 돌아가기
-    </button>
+    <header>
+      <h1>Civitas Lab</h1>
+      <p>AI 실험 아카이브 — 데이터와 철학의 만남</p>
+    </header>
 
-    <h1>🧪 Civitas Lab Experiments</h1>
-    <p>AI가 자동 생성한 최신 실험 리포트 목록입니다.</p>
+    <main>
+      <div id="grid" class="grid">불러오는 중...</div>
+    </main>
 
-    <section class="experiment-list" id="expList"></section>
-
-    <footer>© 2025 Civitas Lab Index · Bookdu Media</footer>
+    <footer>© 2025 Bookdu Media · Civitas Lab</footer>
 
     <script>
-      // index.json 불러오기
       fetch("data/index.json")
         .then((res) => res.json())
-        .then((data) => {
-          const container = document.getElementById("expList");
-          data.experiments.forEach((exp) => {
+        .then((experiments) => {
+          const grid = document.getElementById("grid");
+          grid.innerHTML = ""; // 초기화
+
+          experiments.forEach((exp) => {
             const card = document.createElement("div");
-            card.className = "experiment-card";
+            card.className = "card";
             card.innerHTML = `
               <a href="generator.html?exp=${exp.id}">
-                ${exp.title}
+                <h3>${exp.title}</h3>
+                <p>${exp.summary}</p>
+                <time>${exp.date}</time>
               </a>
-              <p>${exp.summary}</p>
             `;
-            container.appendChild(card);
+            grid.appendChild(card);
           });
         })
-        .catch(() => {
-          document.getElementById("expList").innerHTML =
-            "<p>⚠️ 실험 목록을 불러올 수 없습니다. data/index.json을 확인하세요.</p>";
+        .catch((err) => {
+          document.getElementById("grid").innerHTML =
+            "<p>⚠️ 실험 목록을 불러올 수 없습니다. data/index.json 파일을 확인하세요.</p>";
         });
     </script>
   </body>
