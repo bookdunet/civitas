@@ -78,79 +78,117 @@
 
     <footer>© 2025 Civitas Lab Auto Generator</footer>
 
-    <script>
-      const params = new URLSearchParams(window.location.search);
-      const exp = params.get("exp") || "trust";
+   <script>
+  // URL의 ?exp= 파라미터 읽기
+  const params = new URLSearchParams(window.location.search);
+  const exp = params.get("exp") || "trust";
 
-      // 현재 실험 데이터 로드
-      fetch(`data/${exp}.json`)
-        .then((res) => res.json())
-        .then((data) => {
-          document.title = data.title + " · Civitas Lab";
-          document.getElementById("title").textContent = data.title;
-          document.getElementById("summary").textContent = data.summary;
+  // JSON 불러오기
+  fetch(`data/${exp}.json`)
+    .then((res) => res.json())
+    .then((data) => {
+      document.title = data.title + " · Civitas Lab";
+      document.getElementById("title").textContent = data.title;
+      document.getElementById("summary").textContent = data.summary;
 
-          // 분석 요약
-          const list = document.getElementById("analysisList");
-          data.analysis.forEach((item) => {
-            const li = document.createElement("li");
-            li.textContent = item;
-            list.appendChild(li);
-          });
+      // 분석 요약 목록 추가
+      const list = document.getElementById("analysisList");
+      data.analysis.forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        list.appendChild(li);
+      });
 
-          // 차트 생성
-          const ctx = document.getElementById("chart").getContext("2d");
-          new Chart(ctx, {
-            type: "line",
-            data: {
-              labels: data.dataset.labels,
-              datasets: [
-                {
-                  label: data.chartLabel || "분석 데이터",
-                  data: data.dataset.values,
-                  borderColor: "#2563eb",
-                  backgroundColor: "rgba(37,99,235,0.2)",
-                  tension: 0.3,
-                  fill: true,
-                },
-              ],
+      // 차트 생성
+      const ctx = document.getElementById("chart").getContext("2d");
+
+      // values2가 있으면 → Dual-axis chart, 없으면 → Single line chart
+      if (data.dataset.values2) {
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: data.dataset.labels,
+            datasets: [
+              {
+                label: "야간조도 (lux)",
+                data: data.dataset.values,
+                borderColor: "#f59e0b",
+                backgroundColor: "rgba(245,158,11,0.2)",
+                yAxisID: "y1",
+                tension: 0.3,
+                fill: true
+              },
+              {
+                label: "평균 수면시간 (h)",
+                data: data.dataset.values2,
+                borderColor: "#2563eb",
+                backgroundColor: "rgba(37,99,235,0.2)",
+                yAxisID: "y2",
+                tension: 0.3,
+                fill: true
+              }
+            ]
+          },
+          options: {
+            scales: {
+              y1: {
+                type: "linear",
+                position: "left",
+                title: { text: "조도 (lux)", display: true },
+                beginAtZero: true
+              },
+              y2: {
+                type: "linear",
+                position: "right",
+                title: { text: "수면시간 (h)", display: true },
+                min: 5.5,
+                max: 8
+              }
             },
-            options: {
-              plugins: { legend: { display: true } },
-              scales: { y: { beginAtZero: true } },
-            },
-          });
-        })
-        .catch(() => {
-          document.body.innerHTML =
-            "<p>⚠️ 데이터를 불러올 수 없습니다. data/*.json 파일을 확인하세요.</p>";
-        });
-
-      // ✅ index.json에서 이전/다음 실험 찾기
-      fetch("data/index.json")
-        .then((res) => res.json())
-        .then((experiments) => {
-          const nav = document.getElementById("navButtons");
-          const currentIndex = experiments.findIndex((e) => e.id === exp);
-
-          if (currentIndex > 0) {
-            const prev = experiments[currentIndex - 1];
-            const prevBtn = document.createElement("button");
-            prevBtn.textContent = `← ${prev.title}`;
-            prevBtn.onclick = () =>
-              (window.location.href = `generator.html?exp=${prev.id}`);
-            nav.prepend(prevBtn);
-          }
-
-          if (currentIndex < experiments.length - 1) {
-            const next = experiments[currentIndex + 1];
-            const nextBtn = document.createElement("button");
-            nextBtn.textContent = `${next.title} →`;
-            nextBtn.onclick = () =>
-              (window.location.href = `generator.html?exp=${next.id}`);
-            nav.append(nextBtn);
+            plugins: {
+              legend: { position: "top" }
+            }
           }
         });
-    </script>
+      } else {
+        // 일반 단일축 그래프 (기존 trust.json 등)
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: data.dataset.labels,
+            datasets: [
+              {
+                label: "분석 데이터",
+                data: data.dataset.values,
+                borderColor: "#2563eb",
+                backgroundColor: "rgba(37,99,235,0.2)",
+                tension: 0.3,
+                fill: true
+              }
+            ]
+          },
+          options: {
+            plugins: { legend: { display: true } },
+            scales: { y: { beginAtZero: true } }
+          }
+        });
+      }
+
+      // note가 있으면 출력
+      if (data.note) {
+        const noteEl = document.createElement("p");
+        noteEl.style.color = "#64748b";
+        noteEl.style.fontSize = "13px";
+        noteEl.style.marginTop = "16px";
+        noteEl.textContent = "※ " + data.note;
+        document.querySelector(".analysis").appendChild(noteEl);
+      }
+    })
+    .catch((err) => {
+      document.body.innerHTML =
+        "<p>⚠️ 데이터를 불러올 수 없습니다. data/trust.json 파일을 확인하세요.</p>";
+    });
+</script>
+
   </body>
 </html>
