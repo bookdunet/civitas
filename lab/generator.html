@@ -36,6 +36,25 @@
         border-radius: 10px;
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
       }
+
+       /* 뒤로가기 버튼 */
+      .back-btn {
+        display: inline-block;
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 14px;
+        font-size: 14px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        margin-bottom: 24px;
+        transition: background 0.2s ease;
+      }
+      .back-btn:hover {
+        background: #1d4ed8;
+      }
+      
       footer {
         text-align: center;
         color: #64748b;
@@ -44,6 +63,11 @@
     </style>
   </head>
   <body>
+      <!-- 🔙 뒤로가기 버튼 -->
+    <button class="back-btn" onclick="window.location.href='../index.html'">
+      ← Civitas Life로 돌아가기
+    </button>
+
     <h1 id="title"></h1>
     <p id="summary"></p>
     <canvas id="chart"></canvas>
