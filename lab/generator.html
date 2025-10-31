@@ -57,7 +57,11 @@
 
     <script>
       // JSON 불러오기
-      fetch("data/trust.json")
+  // URL의 ?exp= 파라미터 읽기
+const params = new URLSearchParams(window.location.search);
+const exp = params.get("exp") || "trust";
+fetch(`data/${exp}.json`)
+
         .then((res) => res.json())
         .then((data) => {
           document.title = data.title + " · Civitas Lab";
