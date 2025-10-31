@@ -10,93 +10,43 @@
       rel="stylesheet"
     />
     <style>
-      :root {
-        --brand: #2563eb;
-        --ink: #0f172a;
-        --muted: #475569;
-        --bg: #f9fafb;
-      }
-
       body {
         font-family: "Noto Sans KR", sans-serif;
-        background: var(--bg);
-        color: var(--ink);
-        padding: 40px 20px;
+        background: #f9fafb;
+        color: #0f172a;
+        padding: 40px;
         max-width: 900px;
         margin: auto;
         line-height: 1.7;
       }
-
       h1 {
         font-size: 30px;
-        margin-bottom: 8px;
       }
-
       p {
-        color: var(--muted);
-        margin-bottom: 12px;
+        color: #475569;
       }
-
-      .chart-wrap {
-        background: #fff;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 18px 24px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-        margin: 25px 0 40px;
-      }
-
       canvas {
         width: 100%;
-        height: 340px;
-        display: block;
+        height: 350px;
+        margin: 20px 0;
       }
-
       .analysis {
         background: #fff;
-        padding: 22px 25px;
-        border-radius: 12px;
+        padding: 20px 25px;
+        border-radius: 10px;
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
       }
-
       footer {
         text-align: center;
         color: #64748b;
-        margin-top: 60px;
-      }
-
-      /* 🔙 뒤로가기 버튼 (비고정형) */
-      .back-btn {
-        display: inline-block;
-        background: var(--brand);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 8px 14px;
-        font-size: 14px;
-        cursor: pointer;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-        margin-bottom: 20px;
-        transition: background 0.2s ease;
-      }
-      .back-btn:hover {
-        background: #1d4ed8;
+        margin-top: 50px;
       }
     </style>
   </head>
-
   <body>
-    <!-- 🔙 뒤로가기 버튼 -->
-    <button class="back-btn" onclick="window.location.href='index.html'">
-      ← 실험 목록으로
-    </button>
-
     <h1 id="title"></h1>
     <p id="summary"></p>
-
-    <div class="chart-wrap">
-      <canvas id="chart"></canvas>
-    </div>
+    <canvas id="chart"></canvas>
 
     <div class="analysis">
       <h3>AI 분석 요약</h3>
@@ -106,24 +56,23 @@
     <footer>© 2025 Civitas Lab Auto Generator</footer>
 
     <script>
-      const params = new URLSearchParams(window.location.search);
-      const exp = params.get("exp") || "trust";
-
-      fetch(`data/${exp}.json`)
+      // JSON 불러오기
+      fetch("data/trust.json")
         .then((res) => res.json())
         .then((data) => {
           document.title = data.title + " · Civitas Lab";
           document.getElementById("title").textContent = data.title;
           document.getElementById("summary").textContent = data.summary;
 
+          // 분석 요약 목록 추가
           const list = document.getElementById("analysisList");
-          list.innerHTML = "";
           data.analysis.forEach((item) => {
             const li = document.createElement("li");
             li.textContent = item;
             list.appendChild(li);
           });
 
+          // 차트 생성
           const ctx = document.getElementById("chart").getContext("2d");
           new Chart(ctx, {
             type: "line",
@@ -131,40 +80,24 @@
               labels: data.dataset.labels,
               datasets: [
                 {
-                  label: data.title,
+                  label: "‘신뢰’ 언급 비율 (‰)",
                   data: data.dataset.values,
                   borderColor: "#2563eb",
-                  backgroundColor: "rgba(37,99,235,0.15)",
-                  tension: 0.35,
+                  backgroundColor: "rgba(37,99,235,0.2)",
+                  tension: 0.3,
                   fill: true,
-                  pointRadius: 4,
-                  pointHoverRadius: 6,
                 },
               ],
             },
             options: {
-              responsive: true,
-              maintainAspectRatio: true,
-              plugins: {
-                legend: { display: false },
-              },
-              scales: {
-                x: {
-                  ticks: { color: "#475569", font: { size: 12 } },
-                  grid: { color: "#f1f5f9" },
-                },
-                y: {
-                  beginAtZero: false,
-                  ticks: { color: "#475569", font: { size: 12 } },
-                  grid: { color: "#e2e8f0" },
-                },
-              },
+              plugins: { legend: { display: true } },
+              scales: { y: { beginAtZero: true } },
             },
           });
         })
-        .catch(() => {
+        .catch((err) => {
           document.body.innerHTML =
-            "<p>⚠️ 데이터를 불러올 수 없습니다. data 폴더를 확인하세요.</p>";
+            "<p>⚠️ 데이터를 불러올 수 없습니다. data/trust.json 파일을 확인하세요.</p>";
         });
     </script>
   </body>
