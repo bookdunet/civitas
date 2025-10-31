@@ -103,54 +103,74 @@
       const ctx = document.getElementById("chart").getContext("2d");
 
       // values2가 있으면 → Dual-axis chart, 없으면 → Single line chart
-      if (data.dataset.values2) {
-        new Chart(ctx, {
-          type: "line",
-          data: {
-            labels: data.dataset.labels,
-            datasets: [
-              {
-                label: "야간조도 (lux)",
-                data: data.dataset.values,
-                borderColor: "#f59e0b",
-                backgroundColor: "rgba(245,158,11,0.2)",
-                yAxisID: "y1",
-                tension: 0.3,
-                fill: true
-              },
-              {
-                label: "평균 수면시간 (h)",
-                data: data.dataset.values2,
-                borderColor: "#2563eb",
-                backgroundColor: "rgba(37,99,235,0.2)",
-                yAxisID: "y2",
-                tension: 0.3,
-                fill: true
-              }
-            ]
-          },
-          options: {
-            scales: {
-              y1: {
-                type: "linear",
-                position: "left",
-                title: { text: "조도 (lux)", display: true },
-                beginAtZero: true
-              },
-              y2: {
-                type: "linear",
-                position: "right",
-                title: { text: "수면시간 (h)", display: true },
-                min: 5.5,
-                max: 8
-              }
-            },
-            plugins: {
-              legend: { position: "top" }
+
+      
+     if (data.dataset.values2) {
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: data.dataset.labels,
+      datasets: [
+        {
+          label: "야간조도 (lux)",
+          data: data.dataset.values,
+          borderColor: "#f59e0b",
+          backgroundColor: "rgba(245,158,11,0.2)",
+          yAxisID: "y1",
+          tension: 0.3,
+          fill: true,
+          pointRadius: 5,
+          pointHoverRadius: 7
+        },
+        {
+          label: "평균 수면시간 (h)",
+          data: data.dataset.values2,
+          borderColor: "#2563eb",
+          backgroundColor: "rgba(37,99,235,0.2)",
+          yAxisID: "y2",
+          tension: 0.3,
+          fill: false,
+          pointRadius: 5,
+          pointHoverRadius: 7
+        }
+      ]
+    },
+    options: {
+      parsing: false,   // ✅ 핵심: 두 축을 독립적으로 처리
+      scales: {
+        y1: {
+          type: "linear",
+          position: "left",
+          title: { text: "조도 (lux)", display: true },
+          beginAtZero: true,
+          grid: { drawOnChartArea: true }
+        },
+        y2: {
+          type: "linear",
+          position: "right",
+          title: { text: "수면시간 (h)", display: true },
+          min: 5.5,
+          max: 8,
+          grid: { drawOnChartArea: false }  // ✅ 겹침 방지
+        }
+      },
+      plugins: {
+        legend: { position: "top" },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              return context.dataset.label + ": " + context.formattedValue;
             }
           }
-        });
-      } else {
+        }
+      }
+    }
+  });
+}
+
+      
+      
+      else {
         // 일반 단일축 그래프 (기존 trust.json 등)
         new Chart(ctx, {
           type: "line",
